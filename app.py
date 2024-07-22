@@ -9,7 +9,7 @@ import logging
 import openai
 from flask_session import Session
 
-# Load environment variables
+# Loav environment variables
 from dotenv import load_dotenv
 load_dotenv()
 
