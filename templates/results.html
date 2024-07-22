@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Song Recommender</title>
+</head>
+<body>
+  <h1>Recommendations for {{ song['name'] }} by {{ song['artists'][0]['name'] }}</h1>
+  <ul>
+    {% for rec_song in recommended_songs %}
+      <li>{{ rec_song['artist_name'] }} - {{ rec_song['track_name'] }}</li>
+    {% endfor %}
+  </ul>
+  <a href="/chat">Back to search</a>
+</body>
+</html>

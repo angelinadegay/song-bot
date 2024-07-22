@@ -2,4 +2,4 @@
 .cache/
 .vscode/
 flask_session/
-templates/
+#templates/

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Song Recommender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            background-size: 400% 400%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .container h1 {
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        .container p {
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            color: #070707;
+            background-color: #00ffc8;
+            border: none;
+            border-radius: 20px;
+            font-size: 1em;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #1a6902;
+        }
+        .color-over {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background: radial-gradient(circle, transparent 20%, rgba(201, 223, 186, 0.1) 20%);
+            background-size: 200% 200%;
+            transition: background 0.3s;
+        }
+
+    </style>
+</head>
+<body>
+    <div class = "color-over" id="color-over"></div>
+    <div class="container">
+        <h1>Welcome to the Spotify Song Recommender</h1>
+        <p>Click the button below to authenticate with Spotify and start getting personalized song recommendations.</p>
+        <a href="{{ auth_url }}" class="btn">Authenticate with Spotify</a>
+    </div>
+    <script>
+        document.addEventListener('mousemove', function(e){
+            const overlay = document.getElementById('color-over');
+            const x = e.clientX / window.innerWidth * 100;
+            const y = e.clientY / window.innerHeight * 100;
+            overlay.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(87, 182, 24, 0.3), transparent 50%)`;
+            });
+    </script>
+</body>
+</html>

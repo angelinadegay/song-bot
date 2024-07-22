@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Song Recommender Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #75b776, #76a0b0);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .chat-container {
+            width: 100%;
+            height: 80%; 
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background-color: #b1dbb1;
+            color: #000000;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .chat-box {
+            padding: 15px;
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 75%;
+            line-height: 1.4;
+        }
+        .message.bot {
+            background-color: #e1f0ff;
+            align-self: flex-start;
+        }
+        .message.user {
+            background-color: #d1ffd6;
+            align-self: flex-end;
+        }
+        .input-box {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+        .input-box input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+            font-size: 1em;
+        }
+        .input-box button {
+            padding: 10px 20px;
+            border: none;
+            background-color:#b08676;
+            color: #000000;
+            border-radius: 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .input-box button:hover {
+            background-color: #020100;
+            color: #ddd;
+        }
+        .color-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background: radial-gradient(circle, transparent 20%, rgba(255,255,255,0.1) 20%);
+            background-size: 200% 200%;
+            transition: background 0.3s;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="color-overlay" id="color-overlay"></div>
+    <div class="chat-container">
+        <div class="chat-header">Spotify Song Recommender Bot</div>
+        <div class="chat-box" id="chat-box">
+            <div class="message bot"><strong>Bot:</strong> Hi! I can help you find song or artist recommendations. Just type 'recommend' followed by a song name, 'similar artist' followed by an artist name, or 'genre' followed by a genre.</div>
+        </div>
+        <div class="input-box">
+            <input type="text" id="user-input" placeholder="Type your message here..." onkeydown="handleKeyDown(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function handleKeyDown(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            if (userInput) {
+                const chatBox = document.getElementById('chat-box');
+                chatBox.innerHTML += `<div class="message user"><strong>You:</strong> ${userInput}</div>`;
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: userInput })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    chatBox.innerHTML += `<div class="message bot"><strong>Bot:</strong> ${data.message}</div>`;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    chatBox.innerHTML += `<div class="message bot"><strong>Bot:</strong> An error occurred while processing your request.</div>`;
+                });
+                document.getElementById('user-input').value = '';
+            }
+        }
+
+        document.addEventListener('mousemove', function(e) {
+            const overlay = document.getElementById('color-overlay');
+            const x = e.clientX / window.innerWidth * 100;
+            const y = e.clientY / window.innerHeight * 100;
+            overlay.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255, 255, 255, 0.3), transparent 50%)`;
+        });
+    </script>
+</body>
+</html>
