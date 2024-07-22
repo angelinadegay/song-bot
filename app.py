@@ -13,6 +13,20 @@ from flask_session import Session
 from dotenv import load_dotenv
 load_dotenv()
 
+model_name = os.environ.get("SPACY_MODEL", "en_core_web_sm")
+
+# Load spaCy model
+def load_model():
+    try:
+        nlp = spacy.load(model_name)
+        return nlp
+    except OSError as e:
+        print(f"Model '{model_name}' not found. Downloading...")
+        spacy.cli.download(model_name)
+        nlp = spacy.load(model_name)
+        return nlp
+    
+
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 redirect_uri = "http://localhost:5000/callback"
@@ -31,7 +45,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Load spaCy model
-nlp = spacy.load("en_core_web_sm")
+nlp = load_model()
 
 # Store user preferences and recommendations
 user_preferences = {
