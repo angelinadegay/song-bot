@@ -89,4 +89,4 @@ Contributing
 Contributions are welcome! Please fork the repository and submit a pull request for any improvements.
 
 Contact
-For any questions or feedback, please contact your angelinadeg000@gmail.com.
+For any questions or feedback, please contact angelinadeg000@gmail.com.
